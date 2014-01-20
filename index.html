@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/modernizr.custom.45427.js"></script>
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<style type="text/css">
+			canvas {
+				border: 1px solid Peru;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvasOne" width="1000" height="1000">
+			你的浏览器不支持canvas
+		</canvas>
+	</body>
+	<script type="text/javascript" src="code-master/ch09/pinball/requestNextAnimationFrame.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		window.addEventListener("load", eventWindowLoaded, false);
+		function eventWindowLoaded() {
+			canvasApp();
+		}
+
+		function canvasApp() {
+			if (!canvasSupport()) {
+				return;
+			}
+			var theCanvas = $("#canvasOne")[0];
+			//			for(var c in theCanvas){
+			//				Debugger.log(c);
+			//			}
+			var context = theCanvas.getContext("2d");
+			context.translate(300, 300);
+			Debugger.log("Drawing Canvas");
+
+			function drawScreen() {
+
+				function caluPoint(sideX, sideY) {
+					this.a = Number(sideX);
+					this.b = Number(sideY);
+					this.arrPoints = [];
+					this.rgba = 'rgba(233,184,213,0.8)';
+
+					//X轴上方
+					for (var i = 0, j = this.a * 2; i <= j; i = i + 2) {
+						this.arrPoints.push([i, this.eachX(i)]);
+					}
+
+					this.pointBottom = [];
+					var length = this.arrPoints.length;
+					for (var d = length - 1; d > 0; d--) {
+						var f = [this.arrPoints[d][0], -this.arrPoints[d][1]];
+						this.pointBottom.push(f);
+					}
+					this.arrPoints = this.arrPoints.concat(this.pointBottom);
+					//					//输入所有点
+					//					for (var c in this.arrPoints) {
+					//						document.writeln(this.arrPoints[c]);
+					//					}
+					this.canvasDraw(this.arrPoints);
+				}
+
+
+				caluPoint.prototype.eachX = function(x) {
+					y = Math.sqrt((Math.pow(this.a * this.b, 2) - Math.pow(this.b * (x - this.a), 2)) / Math.pow(this.a, 2));
+					return toDecimal(y);
+					//四舍五入
+					function toDecimal(x) {
+						var f = parseFloat(x);
+						if (isNaN(f)) {
+							return;
+						}
+						f = Math.round(x * 1000) / 1000;
+						return f;
+
+					}
+
+				}
+				caluPoint.prototype.canvasDraw = function(points) {
+
+					var arr = [];
+					var color = this.rgba;
+					//起始点
+					var startNum = [20, 110, 190, 250, 300, 395];
+					var numCount = points.length;
+
+					startAnimation();
+
+					function startAnimation() {
+						startNum = AddNum(startNum, 1, numCount);
+						//drawImage(startNum);
+					}
+
+					function AddNum(arr, addNum, numCount) {
+
+						var arrlength = arr.length;
+						for (var c in arr) {
+							arr[c] = arr[c] + addNum;
+							if (arr[c] > numCount) {
+								arr[c] = 1;
+							}
+						}
+						return arr;
+					}
+
+					function drawImage(arr) {
+						var sharpBottom = [];
+
+						//固定底色
+						sharpBottom.push([arr[4], arr[5], arr[0]]);
+						sharpBottom.push([arr[4], arr[0], arr[1]]);
+						sharpBottom.push([arr[4], arr[1], arr[2]]);
+						sharpBottom.push([arr[4], arr[2], arr[3]]);
+						//透明色
+						sharpBottom.push([arr[0], arr[1], arr[2]]);
+						sharpBottom.push([arr[5], arr[1], arr[2]]);
+						sharpBottom.push([arr[3], arr[1], arr[2]]);
+
+						createOnetriangle(sharpBottom[0], "#e09cc3");
+						createOnetriangle(sharpBottom[1], "#e9b8d5");
+						createOnetriangle(sharpBottom[2], "#e397be");
+						createOnetriangle(sharpBottom[3], "#de82b3");
+						createOnetriangle(sharpBottom[4], color);
+						createOnetriangle(sharpBottom[5], color);
+						createOnetriangle(sharpBottom[6], color);
+
+						function createOnetriangle(arr, color) {
+							context.lineWidth = 0;
+							context.beginPath();
+							context.moveTo(arr[0][0], arr[0][1]);
+							context.lineTo(arr[1][0], arr[1][1]);
+							context.lineTo(arr[2][0], arr[2][1]);
+							context.lineTo(arr[0][0], arr[0][1]);
+							context.closePath();
+							context.fillStyle = color;
+							context.fill();
+						}
+
+					}
+
+				}
+				new caluPoint(200, 100);
+			}
+
+			drawScreen();
+		}
+
+		function canvasSupport() {
+			return Modernizr.canvas;
+		}
+
+		var Debugger = function() {
+
+		}
+		Debugger.log = function(message) {
+			try {
+				console.log(message);
+			} catch(e) {
+				return;
+			}
+		}
+
+
+	</script>
+</html>
