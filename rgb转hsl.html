@@ -6,57 +6,72 @@
 	</head>
 	<body>
 		<script>
-			function rgbToHsl(r, j, b) {
-				var colorR = r / 255;
-				var colorJ = j / 255;
-				var colorB = b / 255;
-				var arr = [colorR, colorJ, colorB];
-				arr.sort(function(a, b) {
-					return a - b
-				})
-				var colorMin = arr[0];
-				var colorMax = arr[2];
-				var delMax = arr[2] - arr[0];
-				
-			}
+			function rgbToHsl(r, g, b) {
+/*---------------------------var--------------------------------------------------------------*/
+				var colorR = r / 255,
+					colorG = g / 255,
+					colorB = b / 255,
+					colorMax = 0,
+					colorMin = 0,
+					H=0,S=0,L=0,
 
-			  			var_R = (R / 255 )//RGB from 0 to 255
-			  			var_G = (G / 255 )
-			  			var_B = (B / 255 )
+					arr = [colorR,colorG,colorB];
+/*---------------------------Function--------------------------------------------------------*/
+				var colorSort = function(){
+					arr.sort(function(a,b){
+						return a-b;
+					});
+					colorMin = arr[0];
+					colorMax = arr[2];
+					document.write("colorMax="+colorMax+"<br />");
+					document.write("colorMin="+colorMin+"<br />");
+				},  calculateL = function(){
+						L =(colorMax + colorMin)/2;
+						document.write("L="+L+"<br />");
+				},  calculateS = function(){
+						if(colorMax != colorMin){
+							if(L < 0.5){
+								alert(1);
+								S = (colorMax - colorMin)/(colorMax + colorMin);
+							}else{
+								S = (colorMax - colorMin)/(2 - colorMax - colorMin);
+							}
+						}
+				},	calculateH = function(){
+					if(colorR = colorMax){
+						H = (colorG - colorB)/(colorMax - colorMin); 
+					}
+					if(colorG = colorMax){
+						H = 2 + (colorB - colorR)/(colorMax - colorMin);
+					}
+					if(colorB = colorMax){
+						H = 4 + (colorR - colorG)/(colorMax - colorMin);
+					}
+					if(H < 0){
+						H = H*80+360;
+					}else{
+						H = H*80;
+					}
+				}
 
-			  			var_Min = min(var_R, var_G, var_B)//Min. value of RGB
-			  			var_Max = max(var_R, var_G, var_B)//Max. value of RGB
-			  			del_Max = var_Max - var_Min//Delta RGB value
+/*--------------------------Init-----------------------------------------------------------------*/
+				init = function(){
+					colorSort();
+					calculateL();
+					calculateS();
+					calculateH();
+					
+				}
 
-			  			L = (var_Max + var_Min ) / 2
+				init();
+				return [H,S,L];
+		}
+		 		document.write(rgbToHsl(255,169,239));
+		  		document.write(rgbToHsl(249,128,215));
+	 			document.write(rgbToHsl(247,121,211));
+	 			document.write(rgbToHsl(229,81,172));
+	 			document.write(rgbToHsl(214,20,124));
 
-			  			if (del_Max == 0)//This is a gray, no chroma...
-			  			{
-			  				H = 0//HSL results from 0 to 1
-			  				S = 0
-			  			} else//Chromatic data...
-			  			{
-			  				if (L < 0.5)
-			  					S = del_Max / (var_Max + var_Min )
-			  				else
-			  					S = del_Max / (2 - var_Max - var_Min )
-
-			  				del_R = (((var_Max - var_R ) / 6 ) + (del_Max / 2 ) ) / del_Max
-			  				del_G = (((var_Max - var_G ) / 6 ) + (del_Max / 2 ) ) / del_Max
-			  				del_B = (((var_Max - var_B ) / 6 ) + (del_Max / 2 ) ) / del_Max
-
-			  				if (var_R == var_Max)
-			  					H = del_B - del_G
-			  				else if (var_G == var_Max)
-			  					H = (1 / 3 ) + del_R - del_B
-			  				else if (var_B == var_Max)
-			  					H = (2 / 3 ) + del_G - del_R
-
-			  				if (H < 0)
-			  					H += 1
-			  				if (H > 1)
-			  					H -= 1
-			  			}
 		</script>
 	</body>
 </html>
