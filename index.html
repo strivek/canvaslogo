@@ -3,18 +3,26 @@
 	<head>
 		<meta charset="utf-8" />
 		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="js/modernizr.custom.45427.js"></script>
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<style type="text/css">
 			canvas {
 				border: 1px solid Peru;
 			}
+			div {
+				margin:0 auto;
+				width:320px;
+			}
 		</style>
 	</head>
 	<body>
-		<canvas id="canvasOne" width="320" height="320" >
+		<div>
+			<canvas id="canvasOne" width="320" height="320" >
 			你的浏览器不支持canvas
-		</canvas>
+		</canvas>	
+		</div>
+		
 	</body>
 
 	<script type="text/javascript" charset="utf-8">
@@ -158,7 +166,7 @@
 				}
 
 			}, clear = function() {
-				context.clearRect(-500,-500,1000, 2000);
+				context.clearRect(-300,-300,960,960);
 			}
 			/*--------------------------------------------------------------------------------------------------------*/
 			/*------------------------------Initialization------------------------------------------------------------*/
@@ -179,7 +187,7 @@
 				calulateStartGroupXY();
 				clear();
 				draw();
-			}, 40);
+			}, 10);
 
 		}
 	</script>
