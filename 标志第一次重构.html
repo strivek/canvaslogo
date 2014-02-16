@@ -12,7 +12,7 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="canvasOne" width="1000" height="1000" >
+		<canvas id="canvasOne" width="320" height="320" >
 			你的浏览器不支持canvas
 		</canvas>
 	</body>
@@ -29,7 +29,7 @@
 			/*---------------------------var-----------------------------------------------------------------*/
 			/*-----------------------------------------------------------------------------------------------*/
 
-			var theCanvas = $("#canvasOne")[0], context = theCanvas.getContext("2d"),
+			var theCanvas = document.getElementById("canvasOne"), context = theCanvas.getContext("2d"),
 			//椭圆长宽
 			ovalTrackSize = [300, 255],
 			//所有点集合
@@ -49,7 +49,8 @@
 			supported = true;
 			//移动坐标轴
 			//context.globalAlpha = 0.5;
-			context.translate(500, 300);
+			context.translate(100, 100);
+			context.scale(.3,.3);
 			//移动坐标轴
 
 			/*-----------------------------------------------------------------------------------------------*/
